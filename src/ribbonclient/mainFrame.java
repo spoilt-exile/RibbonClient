@@ -178,6 +178,11 @@ public class mainFrame extends javax.swing.JFrame {
         messageMenu.add(jSeparator3);
 
         infoItem.setText("Інформація");
+        infoItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                infoItemActionPerformed(evt);
+            }
+        });
         messageMenu.add(infoItem);
 
         clientBar.add(messageMenu);
@@ -280,6 +285,11 @@ public class mainFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_removeButActionPerformed
+
+    private void infoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoItemActionPerformed
+        informFrame informer = new informFrame(this, false, new MessageClasses.Message(currMessage, this.messagePane.getText()));
+        informer.setVisible(true);
+    }//GEN-LAST:event_infoItemActionPerformed
 
     /**
      * @param args the command line arguments

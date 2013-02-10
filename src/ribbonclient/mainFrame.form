@@ -89,6 +89,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x406;&#x43d;&#x444;&#x43e;&#x440;&#x43c;&#x430;&#x446;&#x456;&#x44f;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="infoItemActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
