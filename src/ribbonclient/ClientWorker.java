@@ -39,11 +39,70 @@ public class ClientWorker extends AppComponents.NetWorker {
         return new AppComponents.Listener[] {
             new AppComponents.Listener("RIBBON_GCTL_FORCE_LOGIN") {
 
-            @Override
-            public void exec(String args) {
-                currentApplication.log(2, "потребує авторізацію!");
+                @Override
+                public void exec(String args) {
+                    currentApplication.log(2, "потребує авторізацію!");
+                }
+            },
+            
+            new AppComponents.Listener("RIBBON_UCTL_LOAD_INDEX") {
+
+                @Override
+                public void exec(String args) {
+                    MessageClasses.MessageEntry newEntry = new MessageClasses.MessageEntry(args);
+                    MessageStore.messageIndex.add(newEntry);
+                    for (String DIR : newEntry.DIRS) {
+                        DirEntrySW.addIndexToDir(DIR, newEntry.INDEX);
+                        if (RibbonClient.clientWindow.currDirectory.FULL_DIR_NAME.equals(DIR)) {
+                            RibbonClient.clientWindow.refreshMessageList();
+                        }
+                    }
+                }
+            },
+            
+            new AppComponents.Listener("RIBBON_UCTL_UPDATE_INDEX") {
+
+                @Override
+                public void exec(String args) {
+                    MessageClasses.MessageEntry modEntry = new MessageClasses.MessageEntry(args);
+                    MessageClasses.MessageEntry exsEntry = MessageStore.getMessageEntryByIndex(modEntry.INDEX);
+                    for (String exsDir : exsEntry.DIRS) {
+                        DirEntrySW.removeIndexFromDir(exsDir, exsEntry.INDEX);
+                    }
+                    exsEntry.modifyMessageEntry(modEntry);
+                    for (String modDir : modEntry.DIRS) {
+                        DirEntrySW.addIndexToDir(modDir, modEntry.INDEX);
+                        if (RibbonClient.clientWindow.currDirectory.FULL_DIR_NAME.equals(modDir)) {
+                            new Thread () {
+                            @Override
+                                public void run() {
+                                    RibbonClient.clientWindow.refreshMessageList();
+                                }
+                            }.start();
+                        }
+                    }
+                }
+            },
+            
+            new AppComponents.Listener("RIBBON_UCTL_DELETE_INDEX") {
+
+                @Override
+                public void exec(String args) {
+                    MessageClasses.MessageEntry delEntry = MessageStore.getMessageEntryByIndex(args);
+                    MessageStore.messageIndex.remove(delEntry);
+                    for (String delDir : delEntry.DIRS) {
+                        DirEntrySW.removeIndexFromDir(delDir, delEntry.INDEX);
+                        if (RibbonClient.clientWindow.currDirectory.FULL_DIR_NAME.equals(delDir)) {
+                            new Thread () {
+                            @Override
+                                public void run() {
+                                    RibbonClient.clientWindow.refreshMessageList();
+                                }
+                            }.start();
+                        }
+                    }
+                }
             }
-        }
         };
     }
 }

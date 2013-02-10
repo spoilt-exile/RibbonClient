@@ -37,6 +37,19 @@ public class mainFrame extends javax.swing.JFrame {
         dirTree.expandRow(0);
         dirTree.setRootVisible(false);
     }
+    
+    /**
+     * Refresh message list;
+     */
+    public void refreshMessageList() {
+        Integer selected = this.messageList.getSelectedIndex();
+        javax.swing.DefaultListModel<String> msgModel = new javax.swing.DefaultListModel();
+        for (String indexEntry : currDirectory.DIR_INDEXCES) {
+            msgModel.addElement(MessageStore.getHeader(indexEntry));
+        }
+        this.messageList.setModel(msgModel);
+        this.messageList.setSelectedIndex(selected);
+    }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -279,7 +292,6 @@ public class mainFrame extends javax.swing.JFrame {
         if (result == 0) {
             String answer = RibbonClient.ClientApplication.appWorker.sendCommandWithReturn("RIBBON_DELETE_MESSAGE:" + this.currMessage.INDEX);
             if (answer.startsWith("OK:")) {
-                this.dispose();
             } else {
                 RibbonClient.ClientApplication.reportError(answer);
             }

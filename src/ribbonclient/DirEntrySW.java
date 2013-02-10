@@ -43,6 +43,15 @@ public class DirEntrySW extends DirClasses.DirEntry implements javax.swing.tree.
     }
     
     /**
+     * Remove given index from specified directory
+     * @param givenDir directory from which index will be removed
+     * @param givenIndex index indentifier
+     */
+    public static void removeIndexFromDir(String givenDir, String givenIndex) {
+        DirEntrySW.rootDir.removeIndex("", givenDir, givenIndex);
+    }
+    
+    /**
      * Get end directory from TreePath selection;
      * @param givenPath selection path;
      * @return end directory object reference;
