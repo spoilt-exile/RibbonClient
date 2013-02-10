@@ -47,6 +47,7 @@ public class mainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jSeparator2 = new javax.swing.JSeparator();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
         jSplitPane2 = new javax.swing.JSplitPane();
@@ -56,15 +57,18 @@ public class mainFrame extends javax.swing.JFrame {
         messagePane = new javax.swing.JTextPane();
         jScrollPane4 = new javax.swing.JScrollPane();
         dirTree = new javax.swing.JTree();
-        bikiBar = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        clientBar = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
         optionsItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         exitItem = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        messageMenu = new javax.swing.JMenu();
         addItem = new javax.swing.JMenuItem();
         editItem = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        repostItem = new javax.swing.JMenuItem();
+        removeBut = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        infoItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutItem = new javax.swing.JMenuItem();
 
@@ -116,12 +120,12 @@ public class mainFrame extends javax.swing.JFrame {
 
         jSplitPane1.setLeftComponent(jScrollPane4);
 
-        jMenu1.setText("Файл");
+        fileMenu.setText("Файл");
 
         optionsItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         optionsItem.setText("Налаштування");
-        jMenu1.add(optionsItem);
-        jMenu1.add(jSeparator1);
+        fileMenu.add(optionsItem);
+        fileMenu.add(jSeparator1);
 
         exitItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         exitItem.setText("Вийти");
@@ -130,11 +134,11 @@ public class mainFrame extends javax.swing.JFrame {
                 exitItemActionPerformed(evt);
             }
         });
-        jMenu1.add(exitItem);
+        fileMenu.add(exitItem);
 
-        bikiBar.add(jMenu1);
+        clientBar.add(fileMenu);
 
-        jMenu2.setText("Повідомлення");
+        messageMenu.setText("Повідомлення");
 
         addItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         addItem.setText("Додати");
@@ -143,7 +147,7 @@ public class mainFrame extends javax.swing.JFrame {
                 addItemActionPerformed(evt);
             }
         });
-        jMenu2.add(addItem);
+        messageMenu.add(addItem);
 
         editItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         editItem.setText("Редагувати");
@@ -152,13 +156,31 @@ public class mainFrame extends javax.swing.JFrame {
                 editItemActionPerformed(evt);
             }
         });
-        jMenu2.add(editItem);
+        messageMenu.add(editItem);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem2.setText("Видалити");
-        jMenu2.add(jMenuItem2);
+        repostItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
+        repostItem.setText("Перевипустити");
+        repostItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                repostItemActionPerformed(evt);
+            }
+        });
+        messageMenu.add(repostItem);
 
-        bikiBar.add(jMenu2);
+        removeBut.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        removeBut.setText("Видалити");
+        removeBut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeButActionPerformed(evt);
+            }
+        });
+        messageMenu.add(removeBut);
+        messageMenu.add(jSeparator3);
+
+        infoItem.setText("Інформація");
+        messageMenu.add(infoItem);
+
+        clientBar.add(messageMenu);
 
         helpMenu.setText("Довідка");
 
@@ -171,9 +193,9 @@ public class mainFrame extends javax.swing.JFrame {
         });
         helpMenu.add(aboutItem);
 
-        bikiBar.add(helpMenu);
+        clientBar.add(helpMenu);
 
-        setJMenuBar(bikiBar);
+        setJMenuBar(clientBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -223,15 +245,41 @@ public class mainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_messageListValueChanged
 
     private void addItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemActionPerformed
-        editorFrame editor = new editorFrame(this, false, null);
+        editorFrame editor = new editorFrame(this, false, null, editorFrame.editMode.POST);
         editor.setVisible(true);
     }//GEN-LAST:event_addItemActionPerformed
 
     private void editItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editItemActionPerformed
         MessageClasses.Message editedMessage = new MessageClasses.Message(currMessage, this.messagePane.getText());
-        editorFrame editor = new editorFrame(this, false, editedMessage);
+        editorFrame editor = new editorFrame(this, false, editedMessage, editorFrame.editMode.MODIFY);
         editor.setVisible(true);
     }//GEN-LAST:event_editItemActionPerformed
+
+    private void repostItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_repostItemActionPerformed
+        MessageClasses.Message editedMessage = new MessageClasses.Message(currMessage, this.messagePane.getText());
+        editorFrame editor = new editorFrame(this, false, editedMessage, editorFrame.editMode.RE_POST);
+        editor.setVisible(true);
+    }//GEN-LAST:event_repostItemActionPerformed
+
+    private void removeButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButActionPerformed
+        Object[] options = {"Да", "Нет"};
+        Integer result = javax.swing.JOptionPane.showOptionDialog(this,
+            "Удалить сообщение '" + this.currMessage.HEADER + "' из системы?",
+            "Вопрос",
+            javax.swing.JOptionPane.YES_NO_CANCEL_OPTION,
+            javax.swing.JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[1]);
+        if (result == 0) {
+            String answer = RibbonClient.ClientApplication.appWorker.sendCommandWithReturn("RIBBON_DELETE_MESSAGE:" + this.currMessage.INDEX);
+            if (answer.startsWith("OK:")) {
+                this.dispose();
+            } else {
+                RibbonClient.ClientApplication.reportError(answer);
+            }
+        }
+    }//GEN-LAST:event_removeButActionPerformed
 
     /**
      * @param args the command line arguments
@@ -271,23 +319,27 @@ public class mainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutItem;
     private javax.swing.JMenuItem addItem;
-    private javax.swing.JMenuBar bikiBar;
+    private javax.swing.JMenuBar clientBar;
     private javax.swing.JTree dirTree;
     private javax.swing.JMenuItem editItem;
     private javax.swing.JMenuItem exitItem;
+    private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem infoItem;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JList messageList;
+    private javax.swing.JMenu messageMenu;
     private javax.swing.JTextPane messagePane;
     private javax.swing.JMenuItem optionsItem;
+    private javax.swing.JMenuItem removeBut;
+    private javax.swing.JMenuItem repostItem;
     // End of variables declaration//GEN-END:variables
 }

@@ -26,18 +26,40 @@ package ribbonclient;
 public class editorFrame extends javax.swing.JDialog {
     
     private MessageClasses.Message editedMessage;
+    
+    /**
+     * Editor mode enumeration
+     */
+    public enum editMode {
+        POST,           //Post new message
+        MODIFY,         //Modify message which already exist
+        RE_POST         //Post message which bases on existent message
+    };
+    
+    private editMode currMode;
 
     /** Creates new form editorFrame */
-    public editorFrame(java.awt.Frame parent, boolean modal, MessageClasses.Message givenMessage) {
+    public editorFrame(java.awt.Frame parent, boolean modal, MessageClasses.Message givenMessage, editMode givenMode) {
         super(parent, modal);
         initComponents();
         editedMessage = givenMessage;
+        currMode = givenMode;
         if (editedMessage != null) {
             this.headerField.setText(editedMessage.HEADER);
             this.editorPane.setText(editedMessage.CONTENT);
             this.tagField.setText(Generic.CsvFormat.renderCommonLine(givenMessage.TAGS));
         } else {
             editedMessage = new MessageClasses.Message();
+        }
+        switch (currMode) {
+            case POST:
+                break;
+            case MODIFY:
+                break;
+            case RE_POST:
+                editedMessage.ORIG_INDEX = editedMessage.INDEX;
+                editedMessage.DIRS = null;
+                break;
         }
     }
 
@@ -146,7 +168,7 @@ public class editorFrame extends javax.swing.JDialog {
         editedMessage.CONTENT = this.editorPane.getText();
         editedMessage.HEADER = this.headerField.getText();
         editedMessage.TAGS = this.tagField.getText().split(",");
-        releaseDialog realeser = new releaseDialog(null, true, editedMessage);
+        releaseDialog realeser = new releaseDialog(null, true, editedMessage, currMode);
         realeser.setVisible(true);
     }//GEN-LAST:event_releaseButActionPerformed
 
@@ -181,7 +203,7 @@ public class editorFrame extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                editorFrame dialog = new editorFrame(new javax.swing.JFrame(), true, new MessageClasses.Message());
+                editorFrame dialog = new editorFrame(new javax.swing.JFrame(), true, new MessageClasses.Message(), editMode.POST);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     @Override
