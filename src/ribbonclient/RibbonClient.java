@@ -25,8 +25,14 @@ package ribbonclient;
  */
 public class RibbonClient {
     
+    /**
+     * Name of application.
+     */
     private static String NAME = "RibbonClient";
     
+    /**
+     * Local application name.
+     */
     private static String LNAME = "Клієнт системи \"Стрічка\"";
     
     /**
@@ -40,6 +46,7 @@ public class RibbonClient {
     public static AppComponents.RibbonApplication ClientApplication;
 
     /**
+     * Main method;
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -51,6 +58,9 @@ public class RibbonClient {
         clientWindow.setVisible(true);
     }
     
+    /**
+     * Load directories from server;
+     */
     public static void loadDirs() {
         String[] rawDirs = ClientApplication.appWorker.sendCommandWithCollect("RIBBON_GET_DIRS:").split("\n");
         for (String dirLine : rawDirs) {

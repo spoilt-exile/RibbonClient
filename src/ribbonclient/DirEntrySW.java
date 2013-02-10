@@ -71,9 +71,7 @@ public class DirEntrySW extends DirClasses.DirEntry implements javax.swing.tree.
      * Chain constuctor (adapted to a2)
      * @param upperLevel all parent directories
      * @param rest rest of the creation query
-     * @param givenComm commentary for directory
-     * @param givenPath path for images
-     * @param givenAnon anonymous mode flag
+     * @param givenSchema schema to apply
      */
     public DirEntrySW(String upperLevel, String rest, DirClasses.DirSchema givenSchema) {
         Integer joint;
@@ -150,9 +148,7 @@ public class DirEntrySW extends DirClasses.DirEntry implements javax.swing.tree.
      * Insert chain of directories in current directory (DirEntrySW version)
      * @param upperLevel all parent directories
      * @param rest rest of the creation query
-     * @param givenComm commentary for directory
-     * @param givenPath path for images
-     * @param givenAnon anonymous mode flag
+     * @param givenSchema schema to apply
      */
     @Override
     public void insertDir(String upperLevel, String rest, DirClasses.DirSchema givenSchema) {

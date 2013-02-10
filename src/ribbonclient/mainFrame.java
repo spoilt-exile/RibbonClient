@@ -25,10 +25,19 @@ package ribbonclient;
  */
 public class mainFrame extends javax.swing.JFrame {
     
+    /**
+     * Directories tree model;
+     */
     public javax.swing.tree.DefaultTreeModel dirTreeModel = new javax.swing.tree.DefaultTreeModel(null);
     
+    /**
+     * Current directory (selected by user);
+     */
     public DirClasses.DirEntry currDirectory;
     
+    /**
+     * Current message (selected by user);
+     */
     public MessageClasses.MessageEntry currMessage;
 
     /** Creates new form mainFrame */

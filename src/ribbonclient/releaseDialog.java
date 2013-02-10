@@ -25,8 +25,14 @@ package ribbonclient;
  */
 public class releaseDialog extends javax.swing.JDialog {
     
+    /**
+     * Message to release;
+     */
     private MessageClasses.Message currMessage;
     
+    /**
+     * Current mode of parent editor;
+     */
     private editorFrame.editMode currMode;
 
     /**

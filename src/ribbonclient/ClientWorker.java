@@ -37,6 +37,11 @@ public class ClientWorker extends AppComponents.NetWorker {
     @Override
     public AppComponents.Listener[] getProtocol() {
         return new AppComponents.Listener[] {
+            
+            /**
+             * [SPECIAL] RIBBON_GCTL_FORCE_LOGIN
+             * Login request listener.
+             */
             new AppComponents.Listener("RIBBON_GCTL_FORCE_LOGIN") {
 
                 @Override
@@ -45,6 +50,10 @@ public class ClientWorker extends AppComponents.NetWorker {
                 }
             },
             
+            /**
+             * [LEVEL_3] RIBBON_UCTL_LOAD_INDEX
+             * Load new message listener.
+             */
             new AppComponents.Listener("RIBBON_UCTL_LOAD_INDEX") {
 
                 @Override
@@ -60,6 +69,11 @@ public class ClientWorker extends AppComponents.NetWorker {
                 }
             },
             
+            
+            /**
+             * [LEVEL_3] RIBBON_UCTL_UPDATE_INDEX
+             * Load modified message listener.
+             */
             new AppComponents.Listener("RIBBON_UCTL_UPDATE_INDEX") {
 
                 @Override
@@ -84,6 +98,10 @@ public class ClientWorker extends AppComponents.NetWorker {
                 }
             },
             
+            /**
+             * [LEVEL_3] RIBBON_UCTL_DELETE_INDEX
+             * Delete message.
+             */
             new AppComponents.Listener("RIBBON_UCTL_DELETE_INDEX") {
 
                 @Override

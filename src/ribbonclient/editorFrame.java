@@ -25,6 +25,9 @@ package ribbonclient;
  */
 public class editorFrame extends javax.swing.JDialog {
     
+    /**
+     * Message to process;
+     */
     private MessageClasses.Message editedMessage;
     
     /**
@@ -36,6 +39,9 @@ public class editorFrame extends javax.swing.JDialog {
         RE_POST         //Post message which bases on existent message
     };
     
+    /**
+     * Current mode of the editor;
+     */
     private editMode currMode;
 
     /** Creates new form editorFrame */

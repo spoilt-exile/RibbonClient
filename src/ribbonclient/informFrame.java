@@ -25,6 +25,9 @@ package ribbonclient;
  */
 public class informFrame extends javax.swing.JDialog {
     
+    /**
+     * Message to display;
+     */
     private MessageClasses.Message currMessage;
 
     /**
@@ -38,8 +41,7 @@ public class informFrame extends javax.swing.JDialog {
     }
     
     /**
-     * Show all messages properties in messageFrame
-     * @param currMessage a message to show
+     * Show all messages properties in informFrame
      */
     public void showMessage() {
         this.setTitle("\"Стрічка\" >>> " + currMessage.DATE);
