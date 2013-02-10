@@ -26,6 +26,10 @@ package ribbonclient;
 public class mainFrame extends javax.swing.JFrame {
     
     public javax.swing.tree.DefaultTreeModel dirTreeModel = new javax.swing.tree.DefaultTreeModel(null);
+    
+    public DirClasses.DirEntry currDirectory;
+    
+    public MessageClasses.MessageEntry currMessage;
 
     /** Creates new form mainFrame */
     public mainFrame() {
@@ -54,11 +58,13 @@ public class mainFrame extends javax.swing.JFrame {
         dirTree = new javax.swing.JTree();
         bikiBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        openEditorItem = new javax.swing.JMenuItem();
-        refreshItem = new javax.swing.JMenuItem();
         optionsItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         exitItem = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        addItem = new javax.swing.JMenuItem();
+        editItem = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutItem = new javax.swing.JMenuItem();
 
@@ -112,19 +118,6 @@ public class mainFrame extends javax.swing.JFrame {
 
         jMenu1.setText("Файл");
 
-        openEditorItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        openEditorItem.setText("Відкрити редактор");
-        openEditorItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openEditorItemActionPerformed(evt);
-            }
-        });
-        jMenu1.add(openEditorItem);
-
-        refreshItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        refreshItem.setText("Обновити дерево");
-        jMenu1.add(refreshItem);
-
         optionsItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         optionsItem.setText("Налаштування");
         jMenu1.add(optionsItem);
@@ -140,6 +133,32 @@ public class mainFrame extends javax.swing.JFrame {
         jMenu1.add(exitItem);
 
         bikiBar.add(jMenu1);
+
+        jMenu2.setText("Повідомлення");
+
+        addItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        addItem.setText("Додати");
+        addItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addItemActionPerformed(evt);
+            }
+        });
+        jMenu2.add(addItem);
+
+        editItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        editItem.setText("Редагувати");
+        editItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editItemActionPerformed(evt);
+            }
+        });
+        jMenu2.add(editItem);
+
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem2.setText("Видалити");
+        jMenu2.add(jMenuItem2);
+
+        bikiBar.add(jMenu2);
 
         helpMenu.setText("Довідка");
 
@@ -176,11 +195,6 @@ public class mainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void openEditorItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEditorItemActionPerformed
-        editorFrame bikiEditor = new editorFrame(this, false);
-        bikiEditor.setVisible(true);
-    }//GEN-LAST:event_openEditorItemActionPerformed
-
     private void aboutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutItemActionPerformed
         aboutFrame bikiAbout = new aboutFrame(this, true);
         bikiAbout.setVisible(true);
@@ -191,9 +205,10 @@ public class mainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_exitItemActionPerformed
 
     private void dirTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_dirTreeValueChanged
-        RibbonClient.ClientApplication.log(3, DirEntrySW.getEndDir(dirTree.getSelectionPath()).FULL_DIR_NAME);
+        this.currDirectory = DirEntrySW.getEndDir(dirTree.getSelectionPath());
+        this.currMessage = null;
         javax.swing.DefaultListModel<String> msgModel = new javax.swing.DefaultListModel();
-        for (String indexEntry : DirEntrySW.getEndDir(dirTree.getSelectionPath()).DIR_INDEXCES) {
+        for (String indexEntry : currDirectory.DIR_INDEXCES) {
             msgModel.addElement(MessageStore.getHeader(indexEntry));
         }
         this.messageList.setModel(msgModel);
@@ -201,11 +216,22 @@ public class mainFrame extends javax.swing.JFrame {
 
     private void messageListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_messageListValueChanged
         if (this.messageList.getSelectedIndex() != -1) {
-            DirEntrySW currDir = DirEntrySW.getEndDir(dirTree.getSelectionPath());
-            messagePane.setText(RibbonClient.ClientApplication.appWorker.sendCommandWithCollect("RIBBON_GET_MESSAGE:" + currDir.FULL_DIR_NAME
-                    + "," + currDir.DIR_INDEXCES.get(this.messageList.getSelectedIndex())));
+            this.currMessage = MessageStore.getMessageEntryByIndex(this.currDirectory.DIR_INDEXCES.get(this.messageList.getSelectedIndex()));
+            messagePane.setText(RibbonClient.ClientApplication.appWorker.sendCommandWithCollect("RIBBON_GET_MESSAGE:" + currDirectory.FULL_DIR_NAME
+                    + "," + this.currMessage.INDEX));
         }
     }//GEN-LAST:event_messageListValueChanged
+
+    private void addItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemActionPerformed
+        editorFrame editor = new editorFrame(this, false, null);
+        editor.setVisible(true);
+    }//GEN-LAST:event_addItemActionPerformed
+
+    private void editItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editItemActionPerformed
+        MessageClasses.Message editedMessage = new MessageClasses.Message(currMessage, this.messagePane.getText());
+        editorFrame editor = new editorFrame(this, false, editedMessage);
+        editor.setVisible(true);
+    }//GEN-LAST:event_editItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -244,11 +270,15 @@ public class mainFrame extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutItem;
+    private javax.swing.JMenuItem addItem;
     private javax.swing.JMenuBar bikiBar;
     private javax.swing.JTree dirTree;
+    private javax.swing.JMenuItem editItem;
     private javax.swing.JMenuItem exitItem;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -258,8 +288,6 @@ public class mainFrame extends javax.swing.JFrame {
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JList messageList;
     private javax.swing.JTextPane messagePane;
-    private javax.swing.JMenuItem openEditorItem;
     private javax.swing.JMenuItem optionsItem;
-    private javax.swing.JMenuItem refreshItem;
     // End of variables declaration//GEN-END:variables
 }

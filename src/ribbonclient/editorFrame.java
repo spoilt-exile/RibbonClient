@@ -24,11 +24,21 @@ package ribbonclient;
  * @author Stanislav Nepochatov
  */
 public class editorFrame extends javax.swing.JDialog {
+    
+    private MessageClasses.Message editedMessage;
 
     /** Creates new form editorFrame */
-    public editorFrame(java.awt.Frame parent, boolean modal) {
+    public editorFrame(java.awt.Frame parent, boolean modal, MessageClasses.Message givenMessage) {
         super(parent, modal);
         initComponents();
+        editedMessage = givenMessage;
+        if (editedMessage != null) {
+            this.headerField.setText(editedMessage.HEADER);
+            this.editorPane.setText(editedMessage.CONTENT);
+            this.tagField.setText(Generic.CsvFormat.renderCommonLine(givenMessage.TAGS));
+        } else {
+            editedMessage = new MessageClasses.Message();
+        }
     }
 
     /** This method is called from within the constructor to
@@ -49,6 +59,8 @@ public class editorFrame extends javax.swing.JDialog {
         releaseBut = new javax.swing.JButton();
         headerField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        tagField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Редактор \"Стрічка\"");
@@ -79,9 +91,16 @@ public class editorFrame extends javax.swing.JDialog {
         releaseBut.setFocusable(false);
         releaseBut.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         releaseBut.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        releaseBut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                releaseButActionPerformed(evt);
+            }
+        });
         editorBar.add(releaseBut);
 
         jLabel1.setText("Заголовок");
+
+        jLabel2.setText("Теги");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -92,10 +111,14 @@ public class editorFrame extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
                     .addComponent(editorBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(headerField)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(headerField)
+                            .addComponent(tagField))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -108,12 +131,24 @@ public class editorFrame extends javax.swing.JDialog {
                     .addComponent(headerField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tagField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void releaseButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_releaseButActionPerformed
+        editedMessage.CONTENT = this.editorPane.getText();
+        editedMessage.HEADER = this.headerField.getText();
+        editedMessage.TAGS = this.tagField.getText().split(",");
+        releaseDialog realeser = new releaseDialog(null, true, editedMessage);
+        realeser.setVisible(true);
+    }//GEN-LAST:event_releaseButActionPerformed
 
     /**
      * @param args the command line arguments
@@ -146,7 +181,7 @@ public class editorFrame extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                editorFrame dialog = new editorFrame(new javax.swing.JFrame(), true);
+                editorFrame dialog = new editorFrame(new javax.swing.JFrame(), true, new MessageClasses.Message());
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     @Override
@@ -165,8 +200,10 @@ public class editorFrame extends javax.swing.JDialog {
     private javax.swing.JButton flushBut;
     private javax.swing.JTextField headerField;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton pasteBut;
     private javax.swing.JButton releaseBut;
+    private javax.swing.JTextField tagField;
     // End of variables declaration//GEN-END:variables
 }
