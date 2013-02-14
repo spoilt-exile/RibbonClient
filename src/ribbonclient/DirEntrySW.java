@@ -82,13 +82,11 @@ public class DirEntrySW extends DirClasses.DirEntry implements javax.swing.tree.
             } else {
                 FULL_DIR_NAME = upperLevel + "." + DIR_NAME;
             }
-            DIR_PATH = FULL_DIR_NAME.toLowerCase().replaceAll("\\.", "/") + "/";
-            new java.io.File(DIR_PATH).mkdirs();
+            DIR_PATH = FULL_DIR_NAME.toLowerCase().replaceAll("\\.", "/") + "/";;
             COMM = "Порожній напрямок";
             FOLDED_DIR.add(new DirEntrySW(FULL_DIR_NAME, rest.substring(joint + 1), givenSchema));
         } else {
             applySchema(givenSchema);
-            new java.io.File(DIR_PATH).mkdirs();
         }
     }
 
