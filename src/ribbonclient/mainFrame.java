@@ -96,6 +96,11 @@ public class mainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Клієнт системи \"Стрічка\"");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jSplitPane1.setDividerLocation(140);
         jSplitPane1.setDividerSize(5);
@@ -311,6 +316,10 @@ public class mainFrame extends javax.swing.JFrame {
         informFrame informer = new informFrame(this, false, new MessageClasses.Message(currMessage, this.messagePane.getText()));
         informer.setVisible(true);
     }//GEN-LAST:event_infoItemActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        RibbonClient.ClientApplication.appWorker.sendCommand("RIBBON_NCTL_CLOSE:");
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
