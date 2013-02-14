@@ -68,7 +68,7 @@ public class ClientWorker extends AppComponents.NetWorker {
                                 public void run() {
                                     RibbonClient.clientWindow.refreshMessageList();
                                 };
-                            };
+                            }.start();
                         }
                     }
                 }
