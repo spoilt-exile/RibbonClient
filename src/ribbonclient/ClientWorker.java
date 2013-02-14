@@ -63,7 +63,12 @@ public class ClientWorker extends AppComponents.NetWorker {
                     for (String DIR : newEntry.DIRS) {
                         DirEntrySW.addIndexToDir(DIR, newEntry.INDEX);
                         if (RibbonClient.clientWindow.currDirectory.FULL_DIR_NAME.equals(DIR)) {
-                            RibbonClient.clientWindow.refreshMessageList();
+                            new Thread () {
+                            @Override
+                                public void run() {
+                                    RibbonClient.clientWindow.refreshMessageList();
+                                };
+                            };
                         }
                     }
                 }
