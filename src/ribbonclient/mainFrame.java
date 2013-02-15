@@ -282,13 +282,13 @@ public class mainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_addItemActionPerformed
 
     private void editItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editItemActionPerformed
-        MessageClasses.Message editedMessage = new MessageClasses.Message(currMessage, this.messagePane.getText());
+        MessageClasses.Message editedMessage = new MessageClasses.Message(currMessage, this.messagePane.getText().trim());
         editorFrame editor = new editorFrame(this, false, editedMessage, editorFrame.editMode.MODIFY);
         editor.setVisible(true);
     }//GEN-LAST:event_editItemActionPerformed
 
     private void repostItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_repostItemActionPerformed
-        MessageClasses.Message editedMessage = new MessageClasses.Message(currMessage, this.messagePane.getText());
+        MessageClasses.Message editedMessage = new MessageClasses.Message(currMessage, this.messagePane.getText().trim());
         editorFrame editor = new editorFrame(this, false, editedMessage, editorFrame.editMode.RE_POST);
         editor.setVisible(true);
     }//GEN-LAST:event_repostItemActionPerformed
@@ -313,7 +313,7 @@ public class mainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_removeButActionPerformed
 
     private void infoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoItemActionPerformed
-        informFrame informer = new informFrame(this, false, new MessageClasses.Message(currMessage, this.messagePane.getText()));
+        informFrame informer = new informFrame(this, false, new MessageClasses.Message(currMessage, this.messagePane.getText().trim()));
         informer.setVisible(true);
     }//GEN-LAST:event_infoItemActionPerformed
 
