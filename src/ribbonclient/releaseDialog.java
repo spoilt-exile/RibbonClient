@@ -169,16 +169,20 @@ public class releaseDialog extends javax.swing.JDialog {
         switch (currMode) {
             case POST:
                 command = "RIBBON_POST_MESSAGE:-1," + this.dirIndicator.getText() + "," + ((String)this.langBox.getSelectedItem()) + ",{" +
-                this.currMessage.HEADER + "}," + Generic.CsvFormat.renderGroup(currMessage.TAGS) + "\n" + currMessage.CONTENT + "\nEND:";
+                this.currMessage.HEADER + "}," + Generic.CsvFormat.renderGroup(currMessage.TAGS) + "," + 
+                Generic.CsvFormat.renderMessageProperties(currMessage.PROPERTIES) + "\n" + currMessage.CONTENT + "\nEND:";
                 break;
             case MODIFY:
                 command = "RIBBON_MODIFY_MESSAGE:" + currMessage.INDEX + "," + this.dirIndicator.getText() + "," + 
-                ((String)this.langBox.getSelectedItem()) + ",{" + currMessage.HEADER + "}," + Generic.CsvFormat.renderGroup(currMessage.TAGS) + 
-                "\n" + currMessage.CONTENT + "\nEND:";
+                ((String)this.langBox.getSelectedItem()) + ",{" + currMessage.HEADER + "}," + Generic.CsvFormat.renderGroup(currMessage.TAGS) +
+                "," + Generic.CsvFormat.renderMessageProperties(currMessage.PROPERTIES) + "\n" + currMessage.CONTENT + "\nEND:";
                 break;
             case RE_POST:
-                command = "RIBBON_POST_MESSAGE:" + currMessage.ORIG_INDEX + "," + this.dirIndicator.getText() + "," + ((String)this.langBox.getSelectedItem()) + ",{" +
-                this.currMessage.HEADER + "}," + Generic.CsvFormat.renderGroup(currMessage.TAGS) + "\n" + currMessage.CONTENT + "\nEND:";
+                currMessage.cleanProperties();
+                command = "RIBBON_POST_MESSAGE:" + currMessage.ORIG_INDEX + "," + this.dirIndicator.getText() + "," + 
+                ((String)this.langBox.getSelectedItem()) + ",{" + this.currMessage.HEADER + "}," + 
+                Generic.CsvFormat.renderGroup(currMessage.TAGS) + "," + Generic.CsvFormat.renderMessageProperties(currMessage.PROPERTIES) + 
+                "\n" + currMessage.CONTENT + "\nEND:";
                 break;
         }
         String result = RibbonClient.ClientApplication.appWorker.sendCommandWithReturn(command);
