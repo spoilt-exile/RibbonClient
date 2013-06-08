@@ -45,6 +45,7 @@ public class mainFrame extends javax.swing.JFrame {
         initComponents();
         dirTree.expandRow(0);
         dirTree.setRootVisible(false);
+        refreshStatusBar();
     }
     
     /**
@@ -58,6 +59,11 @@ public class mainFrame extends javax.swing.JFrame {
         }
         this.messageList.setModel(msgModel);
         this.messageList.setSelectedIndex(selected);
+        refreshStatusBar();
+    }
+    
+    public void refreshStatusBar() {
+        this.statusLabel.setText(RibbonClient.ClientApplication.CURR_LOGIN + " на " + RibbonClient.ClientApplication.SERVER_IP + " (" + MessageStore.messageIndex.size() + ")");
     }
 
     /** This method is called from within the constructor to
@@ -79,8 +85,11 @@ public class mainFrame extends javax.swing.JFrame {
         messagePane = new javax.swing.JTextPane();
         jScrollPane4 = new javax.swing.JScrollPane();
         dirTree = new javax.swing.JTree();
+        statusBar = new javax.swing.JPanel();
+        statusLabel = new javax.swing.JLabel();
         clientBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
+        reloginItem = new javax.swing.JMenuItem();
         optionsItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         exitItem = new javax.swing.JMenuItem();
@@ -128,11 +137,11 @@ public class mainFrame extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
         );
 
         jSplitPane1.setRightComponent(jPanel1);
@@ -147,7 +156,31 @@ public class mainFrame extends javax.swing.JFrame {
 
         jSplitPane1.setLeftComponent(jScrollPane4);
 
-        fileMenu.setText("Файл");
+        statusBar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        statusLabel.setText("СТАТУС");
+
+        javax.swing.GroupLayout statusBarLayout = new javax.swing.GroupLayout(statusBar);
+        statusBar.setLayout(statusBarLayout);
+        statusBarLayout.setHorizontalGroup(
+            statusBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        statusBarLayout.setVerticalGroup(
+            statusBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(statusLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+        );
+
+        fileMenu.setText("Клієнт");
+
+        reloginItem.setText("Переувійти до системи");
+        reloginItem.setToolTipText("");
+        reloginItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reloginItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(reloginItem);
 
         optionsItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         optionsItem.setText("Налаштування");
@@ -235,14 +268,18 @@ public class mainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(statusBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+                .addComponent(jSplitPane1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(statusBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -321,6 +358,18 @@ public class mainFrame extends javax.swing.JFrame {
         RibbonClient.ClientApplication.appWorker.sendCommand("RIBBON_NCTL_CLOSE:");
     }//GEN-LAST:event_formWindowClosing
 
+    private void reloginItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloginItemActionPerformed
+      new Thread() {
+            @Override
+            public void run() {
+                UIComponents.LoginWindow loginFrame = new UIComponents.LoginWindow(RibbonClient.ClientApplication);
+                loginFrame.setVisible(true);
+                loginFrame.waitForClose();
+                RibbonClient.clientWindow.refreshStatusBar();
+            }
+        }.start();
+    }//GEN-LAST:event_reloginItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -379,7 +428,10 @@ public class mainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu messageMenu;
     private javax.swing.JTextPane messagePane;
     private javax.swing.JMenuItem optionsItem;
+    private javax.swing.JMenuItem reloginItem;
     private javax.swing.JMenuItem removeBut;
     private javax.swing.JMenuItem repostItem;
+    private javax.swing.JPanel statusBar;
+    private javax.swing.JLabel statusLabel;
     // End of variables declaration//GEN-END:variables
 }
