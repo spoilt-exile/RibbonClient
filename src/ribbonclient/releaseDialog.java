@@ -34,6 +34,16 @@ public class releaseDialog extends javax.swing.JDialog {
      * Current mode of parent editor;
      */
     private editorFrame.editMode currMode;
+    
+    /**
+     * Original copyright string.
+     */
+    private String originalCopyRight;
+    
+    /**
+     * New copyright string to apply.
+     */
+    private String applyCopyRight;
 
     /**
      * Creates new form releaseDialog
@@ -48,6 +58,24 @@ public class releaseDialog extends javax.swing.JDialog {
         this.dirTree.setModel(DirEntrySW.rootDir);
         dirTree.expandRow(0);
         dirTree.setRootVisible(false);
+        String copyRightString = this.currMessage.getCopyright();
+        if (copyRightString == null) {
+            this.copyLabel.setText("Немає даних щодо авторськіх прав!");
+        } else {
+            this.copyLabel.setText("Авторські права належать:" + copyRightString);
+            this.originalCopyRight = copyRightString;
+        }
+        switch (currMode) {
+            case POST:
+                this.copyBox.setSelectedIndex(1);
+                break;
+            case RE_POST:
+                this.copyBox.setSelectedIndex(0);
+                break;
+            case MODIFY:
+                this.copyBox.setSelectedIndex(1);
+                break;
+        }
     }
 
     /**
@@ -59,6 +87,7 @@ public class releaseDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         dirTree = new javax.swing.JTree();
         jLabel1 = new javax.swing.JLabel();
@@ -67,6 +96,11 @@ public class releaseDialog extends javax.swing.JDialog {
         langBox = new javax.swing.JComboBox();
         cancelBut = new javax.swing.JButton();
         releaseBut = new javax.swing.JButton();
+        copyBox = new javax.swing.JComboBox();
+        copyLabel = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+
+        jLabel3.setText("jLabel3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Випуск повідомлення");
@@ -102,6 +136,12 @@ public class releaseDialog extends javax.swing.JDialog {
             }
         });
 
+        copyBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Не змінювати", "Змінити права на мене", "Змінити права за списокм" }));
+
+        copyLabel.setText("Авторські права належать:");
+
+        jLabel4.setText("Авторські права");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -112,26 +152,33 @@ public class releaseDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(dirIndicator)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(releaseBut)
+                        .addGap(18, 18, 18)
+                        .addComponent(cancelBut))
+                    .addComponent(copyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(langBox, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 137, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(releaseBut)
-                        .addGap(18, 18, 18)
-                        .addComponent(cancelBut)))
+                                .addComponent(langBox, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(copyBox, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 92, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -142,10 +189,15 @@ public class releaseDialog extends javax.swing.JDialog {
                             .addComponent(langBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(copyBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(copyLabel)
+                        .addGap(44, 44, 44)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cancelBut)
-                            .addComponent(releaseBut)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(releaseBut))))
+                .addContainerGap())
         );
 
         pack();
@@ -244,10 +296,14 @@ public class releaseDialog extends javax.swing.JDialog {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelBut;
+    private javax.swing.JComboBox copyBox;
+    private javax.swing.JLabel copyLabel;
     private javax.swing.JTextField dirIndicator;
     private javax.swing.JTree dirTree;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox langBox;
     private javax.swing.JButton releaseBut;
