@@ -1,21 +1,87 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/**
+ * This file is part of RibbonClient application (check README).
+ * Copyright (C) 2013 Stanislav Nepochatov
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+**/
+
 package ribbonclient;
 
+import javax.swing.event.ListSelectionEvent;
+
 /**
- *
- * @author spoilt
+ * User picking dialog class.
+ * @author Stanislav Nepochatov
  */
 public class userDialog extends javax.swing.JDialog {
+    
+    /**
+     * User table model;
+     */
+    private javax.swing.table.DefaultTableModel userModel;
+    
+    /**
+     * Release dialog (parent).
+     */
+    private releaseDialog releaser;
+    
+    /**
+     * Fallback copyright string for cancel option;
+     */
+    private String fallbackCopyright;
 
     /**
      * Creates new form userDialog
      */
-    public userDialog(java.awt.Frame parent, boolean modal) {
+    public userDialog(java.awt.Frame parent, boolean modal, releaseDialog parentRealeser) {
         super(parent, modal);
         initComponents();
+        releaser = parentRealeser;
+        fallbackCopyright = releaser.applyCopyRight;
+        userModel = new javax.swing.table.DefaultTableModel(
+                new Object [][] {},
+                new String [] {"Користувач", "Опис"}
+            ) {
+                Class[] types = new Class [] {
+                    java.lang.String.class, java.lang.String.class
+                };
+                boolean[] canEdit = new boolean [] {
+                    false, false
+                };
+
+                @Override
+                public Class getColumnClass(int columnIndex) {
+                    return types [columnIndex];
+                }
+
+                @Override
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return canEdit [columnIndex];
+                }
+            };
+        String[] respond = RibbonClient.ClientApplication.appWorker.sendCommandWithCollect("RIBBON_GET_USERS:").split("\n");
+        for (String entry : respond) {
+            this.userModel.addRow(Generic.CsvFormat.commonParseLine(entry, 2));
+        }
+        this.userTable.setModel(userModel);
+        this.userTable.getSelectionModel().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                releaser.applyCopyRight = (String) userModel.getValueAt(userTable.getSelectedRow(), 0);
+            }
+        });
     }
 
     /**
@@ -34,27 +100,16 @@ public class userDialog extends javax.swing.JDialog {
         cancelBut = new javax.swing.JButton();
         applyBut = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Вибір автора");
 
         userTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"root", "Адміністратор"},
-                {"Непочатов С.І.", "користувач"}
+
             },
             new String [] {
-                "Користувач", "Опис"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-        });
-        userTable.setColumnSelectionAllowed(true);
+        ));
         userTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(userTable);
         userTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -62,8 +117,18 @@ public class userDialog extends javax.swing.JDialog {
         jLabel1.setText("Пошук");
 
         cancelBut.setText("Відміна");
+        cancelBut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButActionPerformed(evt);
+            }
+        });
 
         applyBut.setText("Застосувати");
+        applyBut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                applyButActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -104,6 +169,15 @@ public class userDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void applyButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyButActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_applyButActionPerformed
+
+    private void cancelButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButActionPerformed
+        this.releaser.applyCopyRight = this.fallbackCopyright;
+        this.setVisible(false);
+    }//GEN-LAST:event_cancelButActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -134,7 +208,7 @@ public class userDialog extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                userDialog dialog = new userDialog(new javax.swing.JFrame(), true);
+                userDialog dialog = new userDialog(new javax.swing.JFrame(), true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

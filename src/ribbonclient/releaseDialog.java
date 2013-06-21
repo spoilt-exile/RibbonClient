@@ -43,7 +43,17 @@ public class releaseDialog extends javax.swing.JDialog {
     /**
      * New copyright string to apply.
      */
-    private String applyCopyRight;
+    public String applyCopyRight;
+    
+    /**
+     * User list dialog object.
+     */
+    private userDialog userList;
+    
+    /**
+     * User list dialog initiation flag.
+     */
+    private Boolean userDialogInit = false;
 
     /**
      * Creates new form releaseDialog
@@ -62,7 +72,7 @@ public class releaseDialog extends javax.swing.JDialog {
         if (copyRightString == null) {
             this.copyLabel.setText("Немає даних щодо авторськіх прав!");
         } else {
-            this.copyLabel.setText("Авторські права належать:" + copyRightString);
+            this.copyLabel.setText("Авторські права належать: " + copyRightString);
             this.originalCopyRight = copyRightString;
         }
         switch (currMode) {
@@ -76,6 +86,29 @@ public class releaseDialog extends javax.swing.JDialog {
                 this.copyBox.setSelectedIndex(1);
                 break;
         }
+        userList = new userDialog(null, true, this);
+    }
+    
+    /**
+     * Get copyright from list of the users.
+     * @return copyright string
+     */
+    public void getCopyrightByList() {
+        if (!this.userDialogInit) {
+            this.userDialogInit = true;
+            userList.setVisible(true);
+        } else {
+            this.userDialogInit = false;
+        }
+        this.copyLabel.setText("Авторські права належать: " + this.applyCopyRight);
+    }
+    
+    /**
+     * Set copyright to apply.
+     * @param givenCopyright copyright string to apply;
+     */
+    public void setApplyiedCopyright(String givenCopyright) {
+        this.applyCopyRight = givenCopyright;
     }
 
     /**
@@ -137,6 +170,11 @@ public class releaseDialog extends javax.swing.JDialog {
         });
 
         copyBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Не змінювати", "Змінити права на мене", "Змінити права за списокм" }));
+        copyBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                copyBoxItemStateChanged(evt);
+            }
+        });
 
         copyLabel.setText("Авторські права належать:");
 
@@ -218,6 +256,12 @@ public class releaseDialog extends javax.swing.JDialog {
 
     private void releaseButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_releaseButActionPerformed
         String command = null;
+        if (!this.applyCopyRight.equals(this.originalCopyRight)) {
+            java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("HH:mm:ss dd.MM.yyyy");
+            java.util.Date now = new java.util.Date();
+            String strDate = dateFormat.format(now);
+            this.currMessage.setCopyright(RibbonClient.ClientApplication.CURR_LOGIN, applyCopyRight, strDate);
+        }
         switch (currMode) {
             case POST:
                 command = "RIBBON_POST_MESSAGE:-1," + this.dirIndicator.getText() + "," + ((String)this.langBox.getSelectedItem()) + ",{" +
@@ -244,6 +288,23 @@ public class releaseDialog extends javax.swing.JDialog {
             RibbonClient.ClientApplication.reportError(result);
         }
     }//GEN-LAST:event_releaseButActionPerformed
+
+    private void copyBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_copyBoxItemStateChanged
+        Integer copyID = this.copyBox.getSelectedIndex();
+        switch (copyID) {
+            case 0:
+                this.copyLabel.setText("Авторські права належать: " + this.originalCopyRight);
+                this.applyCopyRight = this.originalCopyRight;
+                break;
+            case 1:
+                this.copyLabel.setText("Авторські права належать: " + RibbonClient.ClientApplication.CURR_LOGIN);
+                this.applyCopyRight = RibbonClient.ClientApplication.CURR_LOGIN;
+                break;
+            case 2:
+                this.getCopyrightByList();
+                break;
+        }
+    }//GEN-LAST:event_copyBoxItemStateChanged
 
     /**
      * @param args the command line arguments
