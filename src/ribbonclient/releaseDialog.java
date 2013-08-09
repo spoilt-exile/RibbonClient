@@ -78,12 +78,15 @@ public class releaseDialog extends javax.swing.JDialog {
         switch (currMode) {
             case POST:
                 this.copyBox.setSelectedIndex(1);
+                this.applyCopyRight = RibbonClient.ClientApplication.CURR_LOGIN;
                 break;
             case RE_POST:
                 this.copyBox.setSelectedIndex(0);
+                this.applyCopyRight = this.originalCopyRight;
                 break;
             case MODIFY:
                 this.copyBox.setSelectedIndex(1);
+                this.applyCopyRight = RibbonClient.ClientApplication.CURR_LOGIN;
                 break;
         }
         userList = new userDialog(null, true, this);
