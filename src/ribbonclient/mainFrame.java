@@ -362,7 +362,7 @@ public class mainFrame extends javax.swing.JFrame {
       new Thread() {
             @Override
             public void run() {
-                UIComponents.LoginWindow loginFrame = new UIComponents.LoginWindow(RibbonClient.ClientApplication);
+                UIComponents.LoginWindow loginFrame = new UIComponents.LoginWindow(RibbonClient.ClientApplication, null);
                 loginFrame.setVisible(true);
                 loginFrame.waitForClose();
                 RibbonClient.clientWindow.refreshStatusBar();

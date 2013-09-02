@@ -51,7 +51,7 @@ public class RibbonClient {
      */
     public static void main(String[] args) {
         ClientApplication = new AppComponents.RibbonApplication(NAME, LNAME, AppComponents.RibbonApplication.ApplicationRole.CLEINT);
-        ClientApplication.connect(ClientWorker.class);
+        ClientApplication.connect(ClientWorker.class, null);
         loadDirs();
         MessageStore.init();
         clientWindow = new mainFrame();
