@@ -259,7 +259,7 @@ public class releaseDialog extends javax.swing.JDialog {
 
     private void releaseButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_releaseButActionPerformed
         String command = null;
-        if (!this.applyCopyRight.equals(this.originalCopyRight)) {
+        if (this.applyCopyRight != null && !this.applyCopyRight.equals(this.originalCopyRight)) {
             java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("HH:mm:ss dd.MM.yyyy");
             java.util.Date now = new java.util.Date();
             String strDate = dateFormat.format(now);
