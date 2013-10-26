@@ -292,6 +292,7 @@ public class mainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutItemActionPerformed
 
     private void exitItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitItemActionPerformed
+        RibbonClient.ClientApplication.appWorker.sendCommand("RIBBON_NCTL_CLOSE:");
         System.exit(0);
     }//GEN-LAST:event_exitItemActionPerformed
 
