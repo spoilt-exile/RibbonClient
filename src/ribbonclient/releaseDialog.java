@@ -83,10 +83,14 @@ public class releaseDialog extends javax.swing.JDialog {
             case RE_POST:
                 this.copyBox.setSelectedIndex(0);
                 this.applyCopyRight = this.originalCopyRight;
+                this.urgentCheck.setSelected(this.currMessage.getProperty("URGENT") != null);
                 break;
             case MODIFY:
                 this.copyBox.setSelectedIndex(1);
                 this.applyCopyRight = RibbonClient.ClientApplication.CURR_LOGIN;
+                //Disable processing forbidden modification;
+                this.urgentCheck.setSelected(this.currMessage.getProperty("URGENT") != null);
+                this.forbidCheck.setEnabled(false);
                 break;
         }
         userList = new userDialog(null, true, this);
@@ -135,6 +139,8 @@ public class releaseDialog extends javax.swing.JDialog {
         copyBox = new javax.swing.JComboBox();
         copyLabel = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        urgentCheck = new javax.swing.JCheckBox();
+        forbidCheck = new javax.swing.JCheckBox();
 
         jLabel3.setText("jLabel3");
 
@@ -183,6 +189,10 @@ public class releaseDialog extends javax.swing.JDialog {
 
         jLabel4.setText("Авторські права");
 
+        urgentCheck.setText("ТЕРМІНОВЕ");
+
+        forbidCheck.setText("Заборонити обробку");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -210,7 +220,11 @@ public class releaseDialog extends javax.swing.JDialog {
                                 .addGap(26, 26, 26)
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(copyBox, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(copyBox, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(urgentCheck)
+                                .addGap(18, 18, 18)
+                                .addComponent(forbidCheck)))
                         .addGap(0, 92, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -228,13 +242,17 @@ public class releaseDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(langBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(copyBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addComponent(copyBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(copyLabel)
-                        .addGap(44, 44, 44)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(urgentCheck)
+                            .addComponent(forbidCheck))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cancelBut)
                             .addComponent(releaseBut))))
@@ -260,10 +278,13 @@ public class releaseDialog extends javax.swing.JDialog {
     private void releaseButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_releaseButActionPerformed
         String command = null;
         if (this.applyCopyRight != null && !this.applyCopyRight.equals(this.originalCopyRight)) {
-            java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("HH:mm:ss dd.MM.yyyy");
-            java.util.Date now = new java.util.Date();
-            String strDate = dateFormat.format(now);
-            this.currMessage.setCopyright(RibbonClient.ClientApplication.CURR_LOGIN, applyCopyRight, strDate);
+            this.currMessage.setCopyright(RibbonClient.ClientApplication.CURR_LOGIN, applyCopyRight);
+        }
+        if (this.forbidCheck.isSelected()) {
+            this.currMessage.addProperty(RibbonClient.ClientApplication.CURR_LOGIN, "PROCESSING_FORBIDDEN", null);
+        }
+        if (this.urgentCheck.isSelected()) {
+            this.currMessage.addProperty(RibbonClient.ClientApplication.CURR_LOGIN, "URGENT", null);
         }
         switch (currMode) {
             case POST:
@@ -364,6 +385,7 @@ public class releaseDialog extends javax.swing.JDialog {
     private javax.swing.JLabel copyLabel;
     private javax.swing.JTextField dirIndicator;
     private javax.swing.JTree dirTree;
+    private javax.swing.JCheckBox forbidCheck;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -371,5 +393,6 @@ public class releaseDialog extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox langBox;
     private javax.swing.JButton releaseBut;
+    private javax.swing.JCheckBox urgentCheck;
     // End of variables declaration//GEN-END:variables
 }

@@ -59,6 +59,11 @@
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="copyBox" min="-2" pref="218" max="-2" attributes="0"/>
                           </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="urgentCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="forbidCheck" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace min="0" pref="92" max="32767" attributes="0"/>
                   </Group>
@@ -82,14 +87,19 @@
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="langBox" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="copyBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="copyLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="urgentCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="forbidCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="25" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="cancelBut" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="releaseBut" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -186,6 +196,16 @@
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x410;&#x432;&#x442;&#x43e;&#x440;&#x441;&#x44c;&#x43a;&#x456; &#x43f;&#x440;&#x430;&#x432;&#x430;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="urgentCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x422;&#x415;&#x420;&#x41c;&#x406;&#x41d;&#x41e;&#x412;&#x415;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="forbidCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x417;&#x430;&#x431;&#x43e;&#x440;&#x43e;&#x43d;&#x438;&#x442;&#x438; &#x43e;&#x431;&#x440;&#x43e;&#x431;&#x43a;&#x443;"/>
       </Properties>
     </Component>
   </SubComponents>
