@@ -65,7 +65,7 @@ public class RibbonClient {
         String[] rawDirs = ClientApplication.appWorker.sendCommandWithCollect("RIBBON_GET_DIRS:").split("\n");
         for (String dirLine : rawDirs) {
             DirClasses.DirSchema rawSchema = new DirClasses.DirSchema(Generic.CsvFormat.parseDoubleStruct(dirLine)[1]);
-            DirEntrySW.rootDir.insertDir("",rawSchema.FULL_DIR_NAME , rawSchema);
+            DirClasses.DirEntryUI.rootDir.insertDir("",rawSchema.FULL_DIR_NAME , rawSchema);
         }
     }
 }

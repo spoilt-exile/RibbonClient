@@ -146,7 +146,7 @@ public class mainFrame extends javax.swing.JFrame {
 
         jSplitPane1.setRightComponent(jPanel1);
 
-        dirTree.setModel(DirEntrySW.rootDir);
+        dirTree.setModel(DirClasses.DirEntryUI.rootDir);
         dirTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
                 dirTreeValueChanged(evt);
@@ -297,7 +297,7 @@ public class mainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_exitItemActionPerformed
 
     private void dirTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_dirTreeValueChanged
-        this.currDirectory = DirEntrySW.getEndDir(dirTree.getSelectionPath());
+        this.currDirectory = DirClasses.DirEntryUI.getEndDir(dirTree.getSelectionPath());
         this.currMessage = null;
         javax.swing.DefaultListModel<String> msgModel = new javax.swing.DefaultListModel();
         for (String indexEntry : currDirectory.DIR_INDEXCES) {

@@ -39,7 +39,7 @@ public final class MessageStore {
             MessageClasses.MessageEntry newEntry = new MessageClasses.MessageEntry(Generic.CsvFormat.parseDoubleStruct(msgLine)[1]);
             messageIndex.add(newEntry);
             for (Integer dirIndex = 0; dirIndex < newEntry.DIRS.length; dirIndex++) {
-                DirEntrySW.addIndexToDir(newEntry.DIRS[dirIndex], newEntry.INDEX);
+                DirClasses.DirEntryUI.addIndexToDir(newEntry.DIRS[dirIndex], newEntry.INDEX);
             }
         }
     }

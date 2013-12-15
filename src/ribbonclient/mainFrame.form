@@ -277,7 +277,7 @@
             <Component class="javax.swing.JTree" name="dirTree">
               <Properties>
                 <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="DirEntrySW.rootDir" type="code"/>
+                  <Connection code="DirClasses.DirEntryUI.rootDir" type="code"/>
                 </Property>
               </Properties>
               <Events>

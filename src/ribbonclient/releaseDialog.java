@@ -65,7 +65,34 @@ public class releaseDialog extends javax.swing.JDialog {
         currMode = givenMode;
         this.dirIndicator.setText(Generic.CsvFormat.renderGroup(currMessage.DIRS));
         this.langBox.setSelectedItem(currMessage.LANG);
-        this.dirTree.setModel(DirEntrySW.rootDir);
+        this.dirTree.setModel(DirClasses.DirEntryUI.rootDir);
+        if (this.currMessage.DIRS != null) {
+            javax.swing.tree.TreePath[] treePaths = new javax.swing.tree.TreePath[this.currMessage.DIRS.length];
+            for (int index = 0; index < this.currMessage.DIRS.length; index++) {
+                String[] pathChain = this.currMessage.DIRS[index].split("\\.");
+                java.util.List<String> completePath = new java.util.ArrayList<String>();
+                completePath.add(DirClasses.DirEntryUI.rootDir.DIR_NAME);
+                completePath.addAll(java.util.Arrays.asList(pathChain));
+                String[] pathDirChain = completePath.toArray(new String[completePath.size()]);
+                DirClasses.DirEntryUI[] pathDir = new DirClasses.DirEntryUI[pathDirChain.length];
+                String compDir = "";
+                for (int dirIndex = 0; dirIndex < pathDirChain.length; ++dirIndex) {
+                    if (dirIndex == 0) {
+                        pathDir[dirIndex] = DirClasses.DirEntryUI.rootDir;
+                    } else {
+                        if (compDir.equals("")) {
+                            compDir += pathDirChain[dirIndex];
+                        } else {
+                            compDir += "." + pathDirChain[dirIndex];
+                        }
+                        pathDir[dirIndex] = (DirClasses.DirEntryUI) DirClasses.DirEntryUI.rootDir.returnEndDir("", compDir);
+                    }
+                }
+                treePaths[index] = new javax.swing.tree.TreePath(pathDir);
+            }
+            dirTree.setExpandsSelectedPaths(true);
+            dirTree.getSelectionModel().setSelectionPaths(treePaths);
+        }
         dirTree.expandRow(0);
         dirTree.setRootVisible(false);
         String copyRightString = this.currMessage.getCopyright();
@@ -266,7 +293,7 @@ public class releaseDialog extends javax.swing.JDialog {
         javax.swing.tree.TreePath[] pathes = dirTree.getSelectionPaths();
         String[] dirStrings = new String[pathes.length];
         for (Integer selIndex = 0; selIndex < pathes.length; selIndex++) {
-            dirStrings[selIndex] = DirEntrySW.getEndDir(pathes[selIndex]).FULL_DIR_NAME;
+            dirStrings[selIndex] = DirClasses.DirEntryUI.getEndDir(pathes[selIndex]).FULL_DIR_NAME;
         }
         this.dirIndicator.setText(Generic.CsvFormat.renderGroup(dirStrings));
     }//GEN-LAST:event_dirTreeValueChanged

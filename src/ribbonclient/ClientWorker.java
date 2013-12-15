@@ -61,7 +61,7 @@ public class ClientWorker extends AppComponents.NetWorker {
                     MessageClasses.MessageEntry newEntry = new MessageClasses.MessageEntry(args);
                     MessageStore.messageIndex.add(newEntry);
                     for (String DIR : newEntry.DIRS) {
-                        DirEntrySW.addIndexToDir(DIR, newEntry.INDEX);
+                        DirClasses.DirEntryUI.addIndexToDir(DIR, newEntry.INDEX);
                         if (RibbonClient.clientWindow.currDirectory.FULL_DIR_NAME.equals(DIR)) {
                             new Thread () {
                             @Override
@@ -86,11 +86,11 @@ public class ClientWorker extends AppComponents.NetWorker {
                     MessageClasses.MessageEntry modEntry = new MessageClasses.MessageEntry(args);
                     MessageClasses.MessageEntry exsEntry = MessageStore.getMessageEntryByIndex(modEntry.INDEX);
                     for (String exsDir : exsEntry.DIRS) {
-                        DirEntrySW.removeIndexFromDir(exsDir, exsEntry.INDEX);
+                        DirClasses.DirEntryUI.removeIndexFromDir(exsDir, exsEntry.INDEX);
                     }
                     exsEntry.modifyMessageEntry(modEntry);
                     for (String modDir : modEntry.DIRS) {
-                        DirEntrySW.addIndexToDir(modDir, modEntry.INDEX);
+                        DirClasses.DirEntryUI.addIndexToDir(modDir, modEntry.INDEX);
                         if (RibbonClient.clientWindow.currDirectory.FULL_DIR_NAME.equals(modDir)) {
                             new Thread () {
                             @Override
@@ -114,7 +114,7 @@ public class ClientWorker extends AppComponents.NetWorker {
                     MessageClasses.MessageEntry delEntry = MessageStore.getMessageEntryByIndex(args);
                     MessageStore.messageIndex.remove(delEntry);
                     for (String delDir : delEntry.DIRS) {
-                        DirEntrySW.removeIndexFromDir(delDir, delEntry.INDEX);
+                        DirClasses.DirEntryUI.removeIndexFromDir(delDir, delEntry.INDEX);
                         if (RibbonClient.clientWindow.currDirectory.FULL_DIR_NAME.equals(delDir)) {
                             new Thread () {
                             @Override
