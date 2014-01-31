@@ -320,11 +320,16 @@ public class releaseDialog extends javax.swing.JDialog {
                 Generic.CsvFormat.renderMessageProperties(currMessage.PROPERTIES) + "\n" + currMessage.CONTENT + "\nEND:";
                 break;
             case MODIFY:
+                MessageClasses.MessageProperty urgent = this.currMessage.getProperty("URGENT");
+                if (urgent != null && !this.urgentCheck.isSelected()) {
+                    this.currMessage.PROPERTIES.remove(urgent);
+                }
                 command = "RIBBON_MODIFY_MESSAGE:" + currMessage.INDEX + "," + this.dirIndicator.getText() + "," + 
                 ((String)this.langBox.getSelectedItem()) + ",{" + currMessage.HEADER + "}," + Generic.CsvFormat.renderGroup(currMessage.TAGS) +
                 "," + Generic.CsvFormat.renderMessageProperties(currMessage.PROPERTIES) + "\n" + currMessage.CONTENT + "\nEND:";
                 break;
             case RE_POST:
+                
                 currMessage.cleanProperties();
                 command = "RIBBON_POST_MESSAGE:" + currMessage.ORIG_INDEX + "," + this.dirIndicator.getText() + "," + 
                 ((String)this.langBox.getSelectedItem()) + ",{" + this.currMessage.HEADER + "}," + 
