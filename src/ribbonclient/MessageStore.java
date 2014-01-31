@@ -34,8 +34,11 @@ public final class MessageStore {
      * Load messages from network.
      */
     public static void init() {
-        String[] rawMsg = RibbonClient.ClientApplication.appWorker.sendCommandWithCollect("RIBBON_LOAD_BASE_FROM_INDEX:0").split("\n");
-        for (String msgLine : rawMsg) {
+        String rawMsg = RibbonClient.ClientApplication.appWorker.sendCommandWithCollect("RIBBON_LOAD_BASE_FROM_INDEX:0");
+        if (rawMsg.startsWith("END:") || rawMsg.isEmpty()) {
+            return;
+        }
+        for (String msgLine : rawMsg.split("\n")) {
             MessageClasses.MessageEntry newEntry = new MessageClasses.MessageEntry(Generic.CsvFormat.parseDoubleStruct(msgLine)[1]);
             messageIndex.add(newEntry);
             for (Integer dirIndex = 0; dirIndex < newEntry.DIRS.length; dirIndex++) {
