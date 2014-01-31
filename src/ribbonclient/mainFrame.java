@@ -19,6 +19,10 @@
 
 package ribbonclient;
 
+import java.awt.Color;
+import java.awt.Component;
+import javax.swing.JList;
+
 /**
  * Main window class.
  * @author Stanislav Nepochatov
@@ -39,12 +43,27 @@ public class mainFrame extends javax.swing.JFrame {
      * Current message (selected by user);
      */
     public MessageClasses.MessageEntry currMessage;
+    
+    private class UrgentRenderer extends javax.swing.DefaultListCellRenderer {
+        
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            Component comp = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            MessageClasses.MessageEntry fmessage = MessageStore.getMessageByDirIndex(currDirectory.FULL_DIR_NAME, index);
+            if (fmessage != null && (fmessage.getProperty("URGENT") != null)) {
+                comp.setForeground(Color.RED);
+            }
+            return comp;
+        }
+        
+    }
 
     /** Creates new form mainFrame */
     public mainFrame() {
         initComponents();
         dirTree.expandRow(0);
         dirTree.setRootVisible(false);
+        messageList.setCellRenderer(new UrgentRenderer());
         refreshStatusBar();
     }
     

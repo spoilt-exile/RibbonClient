@@ -72,4 +72,23 @@ public final class MessageStore {
         }
         return null;
     }
+    
+    /**
+     * Return message entry by dir name and index in specified dir.
+     * @param dir directory name for search;
+     * @param index index of message in specified dir index;
+     * @return finded message or null (not found).
+     */
+    public static MessageClasses.MessageEntry getMessageByDirIndex(String dir, Integer index) {
+        if (dir.isEmpty() || index.equals(-1)) {
+            return null;
+        } else {
+            DirClasses.DirEntry findedDir = DirClasses.DirEntryUI.rootDir.returnEndDir("", dir);
+            if (findedDir == null) {
+                return null;
+            } else {
+                return getMessageEntryByIndex(findedDir.DIR_INDEXCES.get(index));
+            }
+        }
+    }
 }
